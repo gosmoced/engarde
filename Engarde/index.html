@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>EN GARDE Бровари — Школа фехтування для дітей та дорослих</title>
+
+    <meta name="description" content="⚔️ Професійний клуб фехтування у Броварах. Набір дітей від 6 років та дорослих. Сучасний зал, досвідчені тренери. Запишіться на пробне тренування!">
+
+    <meta name="keywords" content="фехтування бровари, спорт бровари, секції для дітей бровари, фехтовальный клуб, спорт для дорослих">
+
+    <meta name="author" content="EN GARDE Brovary">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://engarde.vercel.app/"> <meta property="og:title" content="EN GARDE — Фехтування у Броварах">
+    <meta property="og:description" content="Приходь на пробне тренування! Розвивай реакцію, силу та інтелект.">
+    <meta property="og:image" content="https://engarde.vercel.app/picture/fencing.jpg">
+
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+
+    <link rel="icon" href="picture/favicon4.png">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0b2eda",
+                        "primary-dark": "#08209e",
+                        "accent-silver": "#e2e8f0",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101322",
+                        "surface-dark": "#1b1e2e",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'metal-gradient': 'linear-gradient(145deg, #2a2d3d 0%, #151725 100%)',
+                        'blue-glow': 'radial-gradient(circle at center, rgba(11, 46, 218, 0.25) 0%, rgba(11, 46, 218, 0) 70%)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .text-glow {
+            text-shadow: 0 0 20px rgba(11, 46, 218, 0.5);
+        }
+        .border-glow {
+            box-shadow: 0 0 10px rgba(11, 46, 218, 0.3);
+        }
+        /* Custom scrollbar for modern feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111218;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0b2eda;
+        }
+
+        /* Класс для фона */
+  .hero-bg-custom {
+      /* По умолчанию (для телефонов) ставим вертикальную картинку */
+      background-image: linear-gradient(to right, rgba(16, 19, 34, 0.9), rgba(16, 19, 34, 0.2)), url('picture/vertical_fencing2.jpg');
+      background-position: center top;
+  }
+
+  /* Для экранов шире 768px (планшеты и компы) меняем на горизонтальную */
+  @media (min-width: 550px) {
+      .hero-bg-custom {
+          background-image: linear-gradient(to right, rgba(16, 19, 34, 0.9), rgba(16, 19, 34, 0.2)), url('picture/fencing.jpg');
+          background-position: center;
+      }
+  }
+
+
+        /* =========================================
+   1. БАЗОВЫЕ НАСТРОЙКИ ДЛЯ БЛОКОВ
+   ========================================= */
+/* Этот класс мы будем вешать на все блоки, которые должны появляться */
+.animate-block {
+    opacity: 0; /* Сначала блок невидим */
+    /* Указываем, что анимация должна остаться в конечном состоянии после завершения */
+    animation-fill-mode: forwards;
+    /* Плавность начала и конца */
+    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Когда JS добавит этот класс, начнется магия */
+.animate-block.is-visible {
+    /* Длительность анимации по умолчанию */
+    animation-duration: 0.8s;
+}
+
+/* Задержки (чтобы блоки появлялись лесенкой, а не все сразу) */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.5s; }
+
+
+/* =========================================
+   2. ВАРИАНТЫ ПОЯВЛЕНИЯ (Ключевые кадры)
+   ========================================= */
+
+/* ВАРИАНТ А: "Выпад" (Резкое появление снизу с небольшим отскоком)
+   Идеально для заголовков и карточек преимуществ */
+@keyframes fadeUpStab {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    70% {
+        transform: translateY(-5px) scale(1.01); /* Небольшой перелет вверх */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+/* Класс для применения */
+.anim-stab.is-visible {
+    animation-name: fadeUpStab;
+}
+
+
+/* ВАРИАНТ Б: "Скольжение клинка" (Появление сбоку)
+   Хорошо для фото тренеров или текста, который сбоку от картинки */
+@keyframes slideInBlade {
+    0% {
+        opacity: 0;
+        transform: translate3d(-100px, 0, 0); /* Едет слева */
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+.anim-slide.is-visible {
+    animation: slideInBlade 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+
+/* ВАРИАНТ В: "Эластичное появление" (Для кнопок и акцентов) */
+@keyframes elasticPop {
+    0% { opacity: 0; transform: scale(0.5); }
+    60% { opacity: 1; transform: scale(1.1); } /* Уже видимо */
+    80% { transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); } /* Фиксируем видимость */
+}
+.anim-pop.is-visible {
+    animation: elasticPop 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* --- ЭФФЕКТЫ КНОПОК (Оставляем как было) --- */
+.btn-shine { position: relative; overflow: hidden; }
+.btn-shine::after {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+    transform: rotate(30deg); transition: all 0.9s; opacity: 0;
+}
+.btn-shine:hover::after { opacity: 1; left: 100%; }
+
+/* =========================================
+   ЭФФЕКТ "ЛИФТ" (Для кнопок)
+   ========================================= */
+
+.btn-lift {
+    /* Плавность движения */
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Чтобы тень не обрезалась */
+    position: relative;
+    z-index: 1;
+}
+
+/* 1. СОСТОЯНИЕ "ACTIVE" (Нажатие)
+   Работает и на ПК, и на Телефоне. Дает ощущение клика. */
+.btn-lift:active {
+    transform: translateY(2px) !important; /* Кнопка уходит вниз */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important; /* Тень исчезает (эффект прижатия к столу) */
+}
+
+/* 2. СОСТОЯНИЕ "HOVER" (Наведение)
+   Включаем ТОЛЬКО если у устройства есть мышка (hover: hover).
+   На телефонах это правило игнорируется, чтобы не было залипаний. */
+@media (hover: hover) {
+    .btn-lift:hover {
+        transform: translateY(-4px); /* Поднимается вверх */
+        /* Красивая размытая тень снизу */
+        box-shadow: 0 15px 30px -5px rgba(var(--primary-color-rgb, 11, 46, 218), 0.5);
+    }
+}
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-x-hidden antialiased selection:bg-primary selection:text-white">
+<!-- Top Navigation -->
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-[#282b39] bg-[#111218]/90 backdrop-blur-md transition-all duration-300">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+
+            <div class="flex items-center gap-3">
+                <a href=""><span class="text-xl font-bold tracking-tight text-white uppercase">EN GARDE <span class="text-primary">Бровари</span></span></a>
+            </div>
+
+            <nav class="hidden min-[800px]:flex items-center gap-6 xl:gap-8">
+                <a class="text-sm font-medium text-gray-300 hover:text-white transition-colors uppercase tracking-wide" href="#about">Про нас</a>
+                <a class="text-sm font-medium text-gray-300 hover:text-white transition-colors uppercase tracking-wide" href="#schedule">Розклад</a>
+                <a class="text-sm font-medium text-gray-300 hover:text-white transition-colors uppercase tracking-wide" href="#coaches">Тренери</a>
+                <a class="text-sm font-medium text-gray-300 hover:text-white transition-colors uppercase tracking-wide" href="#contacts">Контакти</a>
+            </nav>
+
+            <div class="hidden min-[800px]:flex">
+                <a class="js-open-modal group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-primary px-6 py-2 font-bold text-white transition-all duration-300 hover:bg-primary-dark hover:scale-105" href="">
+                    <span class="mr-2">Записатися</span>
+                    <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-2">arrow_forward</span>
+                </a>
+            </div>
+
+            <button id="mobile-menu-btn" class="min-[800px]:hidden text-white p-2">
+                <span class="material-symbols-outlined text-3xl">menu</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden absolute top-16 left-0 w-full bg-[#111218]/90 backdrop-blur-md border-b border-[#282b39] shadow-2xl min-[800px]:hidden z-40">
+        <div class="flex flex-col px-4 py-6 space-y-4 text-center">
+            <a class="text-lg font-medium text-gray-300 hover:text-white" href="#about">Про нас</a>
+            <a class="text-lg font-medium text-gray-300 hover:text-white" href="#schedule">Розклад</a>
+            <a class="text-lg font-medium text-gray-300 hover:text-white" href="#coaches">Тренери</a>
+            <a class="text-lg font-medium text-gray-300 hover:text-white" href="#contacts">Контакти</a>
+
+            <a class="js-open-modal inline-flex w-full items-center justify-center rounded-lg bg-primary px-6 py-3 font-bold text-white shadow-lg hover:bg-primary-dark" href="">
+                ЗАПИСАТИСЯ
+            </a>
+        </div>
+    </div>
+</header>
+<!-- Hero Section -->
+<section class="relative flex min-h-screen w-full flex-col justify-center pt-16">
+<!-- Background Image with Overlay -->
+<div class="absolute inset-0 z-0 h-full w-full bg-cover bg-center bg-no-repeat hero-bg-custom" data-alt="Dynamic shot of a fencer in mid-lunge with a dark moody background">
+</div>
+<div class="relative z-10 mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8 flex flex-col justify-center h-full flex-1">
+<div class="max-w-3xl animate-fade-in-up">
+<div class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 mb-6 backdrop-blur-sm">
+<span class="flex h-2 w-2 rounded-full bg-primary animate-pulse mr-2"></span>
+<span class="text-xs font-bold uppercase tracking-wider text-primary-200">Професійний клуб фехтування</span>
+</div>
+<h1 class="text-4xl font-black uppercase leading-tight tracking-tight text-white sm:text-7xl lg:text-8xl mb-6">
+                    Стань <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400 text-glow">Чемпіоном</span><br/>разом з нами
+                </h1>
+<p class="mb-8 max-w-xl text-lg text-gray-300 sm:text-xl font-body leading-relaxed">
+                    Виховуємо характер та майстерність володіння шпагою. Професійна підготовка, сучасне обладнання та дух перемоги.
+                </p>
+<div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+<a class="btn-lift js-open-modal flex h-14 min-w-[200px] items-center justify-center rounded-lg bg-primary px-8 text-base font-bold uppercase tracking-wide text-white" href="">
+<span class="material-symbols-outlined mr-2">chat</span>
+                        Записатися
+                    </a>
+<div class="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-5 py-3 backdrop-blur-md">
+<span class="material-symbols-outlined text-yellow-400">stars</span>
+<div>
+<p class="text-xs text-gray-400 uppercase">Спеціальна пропозиція</p>
+<p class="text-sm font-bold text-white">Перше тренування — БЕЗКОШТОВНО!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Why Us Section -->
+<section class="bg-background-dark py-20 relative overflow-hidden" id="about">
+<!-- Abstract Background Shapes -->
+<div class="absolute top-0 right-0 w-1/3 h-full bg-primary/5 -skew-x-12 translate-x-1/3"></div>
+<div class="absolute bottom-0 left-0 w-1/4 h-1/2 bg-blue-900/5 rounded-full blur-3xl"></div>
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="mb-16">
+    <h2 class="text-4xl font-bold uppercase tracking-tight text-white sm:text-5xl leading-snug">
+        <span class="relative inline-block">
+            Чому
+            <span class="absolute -bottom-0 sm:-bottom-2 left-0 h-1 w-24 sm:w-32 bg-primary"></span>
+        </span>
+        <span class="text-primary"> Обирають Нас</span>
+    </h2>
+    </div>
+<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+<!-- Feature 1 -->
+<div class="animate-block anim-stab delay-1 group relative rounded-xl border border-white/10 bg-surface-dark p-8 transition-all hover:border-primary/50 hover:bg-[#1f2235]">
+<div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-lg bg-primary/20 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">sports_martial_arts</span>
+</div>
+<h3 class="mb-3 text-xl font-bold text-white">Безкоштовне спорядження</h3>
+<p class="text-gray-400 font-body">Ми надаємо повний комплект професійного фехтувального екіпірування безкоштовно на перший місяць тренувань.</p>
+</div>
+<!-- Feature 2 -->
+<div class="animate-block anim-stab delay-2 group relative rounded-xl border border-white/10 bg-surface-dark p-8 transition-all hover:border-primary/50 hover:bg-[#1f2235]">
+<div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-lg bg-primary/20 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">swords</span>
+</div>
+<h3 class="mb-3 text-xl font-bold text-white">Спеціалізація: Шпага</h3>
+<p class="text-gray-400 font-body">Ми фокусуємось виключно на шпазі — найбільш популярному та інтелектуальному виді сучасної олімпійської зброї.</p>
+</div>
+<!-- Feature 3 -->
+<div class="animate-block anim-stab delay-3 group relative rounded-xl border border-white/10 bg-surface-dark p-8 transition-all hover:border-primary/50 hover:bg-[#1f2235]">
+<div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-lg bg-primary/20 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">emoji_events</span>
+</div>
+<h3 class="mb-3 text-xl font-bold text-white">Шлях до перемог</h3>
+<p class="text-gray-400 font-body">Регулярна участь у всеукраїнських та міжнародних змаганнях. Отримання спортивних розрядів та звань.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Schedule Section -->
+<section class="bg-[#0b0d17] py-24 border-y border-white/5" id="schedule">
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-4">
+<div>
+<h2 class="text-4xl font-bold uppercase tracking-tight text-white sm:text-5xl">Розклад <span class="text-primary">Тренувань</span></h2>
+<p class="mt-4 text-gray-400 max-w-2xl font-body">Оберіть зручну групу для себе або вашої дитини. Графік складений з урахуванням шкільного навчання та робочого часу.</p>
+</div>
+<a class="hidden md:inline-flex items-center text-primary font-bold hover:text-white transition-colors" href="#contacts">
+                    Подивитися на мапі <span class="material-symbols-outlined ml-1">arrow_forward</span>
+</a>
+</div>
+
+    <div class="animate-block anim-stab mb-12 rounded-xl border border-red-500/30 bg-red-500/5 p-4 sm:p-5">
+            <div class="flex items-start gap-4">
+                <div class="hidden sm:flex flex-shrink-0 items-center justify-center rounded-full bg-red-500/10 p-2 text-red-500">
+                    <span class="material-symbols-outlined">warning</span>
+                </div>
+
+                <div class="flex-1">
+                    <h3 class="flex items-center gap-2 font-bold text-red-400 text-sm uppercase tracking-wider mb-1">
+                        <span class="material-symbols-outlined text-lg sm:hidden">warning</span> Увага!
+                    </h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        У зв'язку з відключеннями світла та дистанційним навчанням графік може змінюватись.
+                        Для уточнення актуальної інформації, будь ласка, звертайтесь за
+                        <a href="" class="js-open-modal text-white underline decoration-red-500/50 underline-offset-4 hover:text-red-400 transition-colors">номером телефону</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+<!-- Group 1 -->
+<div class="rounded-lg border-l-4 border-primary bg-surface-dark p-6 shadow-lg hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-bold uppercase">Діти</span>
+<span class="material-symbols-outlined text-gray-500">schedule</span>
+</div>
+<h3 class="text-2xl font-bold text-white mb-1">Молодша група</h3>
+<p class="text-sm text-gray-400 mb-4">2017 р.н. та молодші</p>
+<div class="space-y-2 border-t border-white/10 pt-4">
+<div class="flex justify-between text-sm font-body">
+<span class="text-gray-300">Вт, Чт</span>
+<span class="font-bold text-primary">16:00</span>
+</div>
+</div>
+</div>
+<!-- Group 2 -->
+<div class="rounded-lg border-l-4 border-blue-400 bg-surface-dark p-6 shadow-lg hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-blue-400/20 text-blue-400 px-2 py-1 rounded text-xs font-bold uppercase">Підлітки</span>
+<span class="material-symbols-outlined text-gray-500">schedule</span>
+</div>
+<h3 class="text-2xl font-bold text-white mb-1">Група початківці</h3>
+<p class="text-sm text-gray-400 mb-4">2016 р.н. та старші</p>
+<div class="space-y-2 border-t border-white/10 pt-4">
+<div class="flex justify-between text-sm font-body">
+<span class="text-gray-300">Вт, Чт, Пт</span>
+<span class="font-bold text-blue-400">17:00</span>
+</div>
+</div>
+<div class="space-y-2  border-white/10 pt-4">
+<div class="flex justify-between text-sm font-body">
+<span class="text-gray-300">Сб</span>
+<span class="font-bold text-blue-400">15:00</span>
+</div>
+</div>
+</div>
+<!-- Group 3 -->
+<div class="rounded-lg border-l-4 border-yellow-500 bg-surface-dark p-6 shadow-lg hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded text-xs font-bold uppercase">Ранок</span>
+<span class="material-symbols-outlined text-gray-500">wb_sunny</span>
+</div>
+<h3 class="text-2xl font-bold text-white mb-1">Ранкова група</h3>
+<p class="text-sm text-gray-400 mb-4">Для тих, хто вчиться у другу зміну</p>
+<div class="space-y-2 border-t border-white/10 pt-4">
+<div class="flex justify-between text-sm font-body">
+<span class="text-gray-300">Вт, Чт</span>
+<span class="font-bold text-yellow-500">10:00</span>
+</div>
+</div>
+<div class="space-y-2  border-white/10 pt-4">
+<div class="flex justify-between text-sm font-body">
+<span class="text-gray-300">Сб</span>
+<span class="font-bold text-blue-400">15:00</span>
+</div>
+</div>
+</div>
+<!-- Group 4 -->
+<div class="rounded-lg border-l-4 border-purple-500 bg-surface-dark p-6 shadow-lg hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-purple-500/20 text-purple-500 px-2 py-1 rounded text-xs font-bold uppercase">Дорослі</span>
+<span class="material-symbols-outlined text-gray-500">group</span>
+</div>
+<h3 class="text-2xl font-bold text-white mb-1">Старша група</h3>
+<p class="text-sm text-gray-400 mb-4">2012 р.н. та старші + аматори</p>
+<div class="space-y-2 border-t border-white/10 pt-4">
+<div class="flex justify-between text-sm font-body">
+<span class="text-gray-300">Вт, Чт</span>
+<span class="font-bold text-purple-500">18:15</span>
+</div>
+</div>
+<div class="space-y-2 border-white/10 pt-4">
+<div class="flex justify-between text-sm font-body">
+<span class="text-gray-300">Пт</span>
+<span class="font-bold text-purple-500">17:30</span>
+</div>
+</div>
+<div class="space-y-2 border-white/10 pt-4">
+<div class="flex justify-between text-sm font-body">
+<span class="text-gray-300">Сб</span>
+<span class="font-bold text-purple-500">17:00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Individual Training Banner -->
+<div class="mt-8 rounded-xl bg-gradient-to-r from-primary/20 to-transparent border border-primary/30 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+<div class="flex items-start gap-4">
+<div class="p-3 bg-primary rounded-full hidden sm:block">
+<span class="material-symbols-outlined text-white">person</span>
+</div>
+<div>
+<h3 class="text-xl font-bold text-white mb-1">Індивідуальні тренування</h3>
+<p class="text-gray-300 font-body text-sm">Бажаєте прискорити прогрес? Запишіться на персональне заняття з тренером у зручний для вас час.</p>
+</div>
+</div>
+<button class="btn-shine animate-block anim-pop js-open-modal whitespace-nowrap rounded-lg bg-primary px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-primary-dark">
+                    Дізнатись деталі
+                </button>
+</div>
+</div>
+</section>
+<!-- Team Section -->
+<section class="bg-background-dark py-24 relative" id="coaches">
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-bold uppercase tracking-tight text-white sm:text-5xl">Наші <span class="text-primary">Тренери</span></h2>
+<p class="mt-4 text-gray-400 font-body">Професіонали, які виховують чемпіонів</p>
+</div>
+<div class="grid gap-10 md:grid-cols-2 max-w-5xl mx-auto">
+<!-- Coach 1 -->
+<div class="animate-block anim-slide group relative overflow-hidden rounded-2xl bg-surface-dark">
+<div class="aspect-[4/5] w-full overflow-hidden bg-gray-800">
+<div class="h-full w-full bg-cover bg-center transition-transform duration-500 scale-[1.01] group-hover:scale-105" data-alt="Portrait of a fencing coach in professional gear holding a mask" style="background-image: linear-gradient(to top, rgba(16, 19, 34, 1) 0%, rgba(16, 19, 34, 0) 100%), url('picture/Dasha.png');">
+</div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-8">
+<div class="mb-2 inline-block rounded bg-primary px-2 py-1 text-xs font-bold uppercase text-white">Тренер</div>
+<h3 class="text-3xl font-bold text-white uppercase tracking-tight mb-2">Дарья Заболотная</h3>
+<p class="text-gray-400 font-body mb-4">Майстер спорту України, 5 років тренерського та 15 років фехтувального стажу.</p>
+</div>
+</div>
+<!-- Coach 2 -->
+<div class="animate-block anim-slide group relative overflow-hidden rounded-2xl bg-surface-dark">
+<div class="aspect-[4/5] w-full overflow-hidden bg-gray-800">
+<div class="h-full w-full bg-cover bg-center transition-transform duration-500 scale-[1.01] group-hover:scale-105" data-alt="Portrait of a female fencing coach looking confident" style="background-image: linear-gradient(to top, rgba(16, 19, 34, 1) 0%, rgba(16, 19, 34, 0) 100%), url('picture/Ilya.png');">
+</div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-8">
+<div class="mb-2 inline-block rounded bg-blue-500 px-2 py-1 text-xs font-bold uppercase text-white">Тренер</div>
+<h3 class="text-3xl font-bold text-white uppercase tracking-tight mb-2">Ілля Гордон</h3>
+<p class="text-gray-400 font-body mb-4">Майстер спорту України. Багаторазовий призер та чемпіон України.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Gallery Section -->
+<section class="py-24 bg-background-dark overflow-hidden" id="gallery">
+<div class="max-w-7xl mx-auto px-6 lg:px-10">
+<div class="flex items-center justify-between mb-16">
+<h2 class="text-3xl font-bold uppercase tracking-tight text-white">Наші <span class="text-primary">Чемпіони</span></h2>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="animate-block anim-stab aspect-[9/16] rounded-xl overflow-hidden glass-card group">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="Vertical shot of fencer with silver medal" style="background-image: url('picture/student1.png');"></div>
+</div>
+<div class="animate-block anim-stab aspect-[9/16] rounded-xl overflow-hidden glass-card group mt-8">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="Action vertical shot of fencing duel" style="background-image: url('picture/student3.png');"></div>
+</div>
+<div class="animate-block anim-stab aspect-[9/16] rounded-xl overflow-hidden glass-card group">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="Fencing athlete cheering after win" style="background-image: url('picture/student2.png');"></div>
+</div>
+<div class="animate-block anim-stab aspect-[9/16] rounded-xl overflow-hidden glass-card group mt-8">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="Portrait of young champion holding epee" style="background-image: url('picture/student4.png');"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer & Contact -->
+<footer class="bg-black pt-16 pb-8 border-t border-white/10" id="contacts">
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<div class="grid gap-12 lg:grid-cols-2">
+<!-- Info Column -->
+<div class="flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-3 mb-6">
+<span class="text-2xl font-bold tracking-tight text-white uppercase">EN GARDE <span class="text-primary">Бровари</span></span>
+</div>
+<p class="text-gray-400 mb-8 max-w-md font-body">Приєднуйтесь до нашої фехтувальної родини. Розвивайте швидкість, координацію та стратегічне мислення.</p>
+<div class="space-y-4 mb-8">
+<div class="flex items-center gap-4">
+<div class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<div>
+<p class="text-sm text-gray-400">Адреса зали:</p>
+<p class="text-white font-medium">м. Бровари, вул. Київська 298</p>
+</div>
+</div>
+<a class="flex items-center gap-4 group">
+<div class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+<span class="material-symbols-outlined text-primary">call</span>
+</div>
+<div>
+<p class="text-sm text-gray-400">Телефон:</p>
+<p class="text-white font-medium text-lg">+38 (099) 123-45-67</p>
+</div>
+</a>
+</div>
+<div class="flex gap-4">
+<a class="flex h-10 w-10 items-center justify-center rounded-lg bg-[#3b5998] text-white hover:opacity-80 transition-opacity" href="https://www.facebook.com/397457053456641?ref=NONE_xav_ig_profile_page_web" target="_blank">
+<svg class="h-5 w-5" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white hover:opacity-80 transition-opacity" href="https://www.instagram.com/engarde.brovary/" target="_blank">
+<svg class="h-5 w-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+<!-- Map Column -->
+<div class="h-[300px] w-full overflow-hidden rounded-xl border border-white/10 bg-surface-dark relative">
+<!-- Simulated Map -->
+<iframe allowfullscreen="" data-location="Brovary, Ukraine" height="100%" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2537.472787834371!2d30.79685647683933!3d50.50682857160351!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4d9770517865f%3A0xe54497931327173e!2zS3lpdnNrYSBTdCwgMjk4LCBCcm92YXJ5LCBLeWl2IE9ibGFzdCwgMDc0MDM!5e0!3m2!1sen!2sua!4v1715694380000!5m2!1sen!2sua" style="border:0;" width="100%">
+</iframe>
+</div>
+</div>
+<div class="mt-12 border-t border-white/10 pt-8 text-center text-sm text-gray-500">
+<p>© 2023 EN GARDE Бровари. Всі права захищені.</p>
+</div>
+</div>
+</footer>
+
+<div id="contact-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
+
+    <div id="modal-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"></div>
+
+    <div class="relative w-full max-w-sm transform overflow-hidden rounded-2xl bg-[#111218] border border-[#282b39] p-6 text-left align-middle shadow-[0_0_50px_rgba(0,0,0,0.5)] transition-all">
+
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-white uppercase tracking-wide">Оберіть месенджер</h3>
+            <button id="close-modal-btn" class="text-gray-400 hover:text-white transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div class="flex flex-col gap-4">
+
+            <a href="https://t.me/powerkynezis" target="_blank" class="flex items-center justify-center gap-3 w-full rounded-xl bg-[#0088cc] p-4 text-white font-bold text-lg hover:bg-[#0077b5] hover:shadow-[0_0_20px_rgba(0,136,204,0.4)] transition-all">
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                Telegram
+            </a>
+
+            <a href="viber://chat?number=%2B380980896747" class="flex items-center justify-center gap-3 w-full rounded-xl bg-[#7360f2] p-4 text-white font-bold text-lg hover:bg-[#5e4ad1] hover:shadow-[0_0_20px_rgba(115,96,242,0.4)] transition-all">
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Viber
+            </a>
+
+        </div>
+        <p class="text-gray-500 text-xs text-center mt-4">Натисніть на зручний месенджер для зв'язку</p>
+    </div>
+</div>
+</body>
+<script>
+    // --- 1. ЛОГИКА МОБИЛЬНОГО МЕНЮ ---
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    // Находим иконку внутри кнопки
+    const menuIcon = menuBtn ? menuBtn.querySelector('span') : null;
+
+    if (menuBtn && mobileMenu) {
+        // Открытие/Закрытие по кнопке
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = mobileMenu.classList.contains('hidden');
+
+            if (isHidden) {
+                // ОТКРЫВАЕМ:
+                mobileMenu.classList.remove('hidden');
+                if (menuIcon) menuIcon.textContent = 'close'; // Меняем на крестик
+            } else {
+                // ЗАКРЫВАЕМ:
+                mobileMenu.classList.add('hidden');
+                if (menuIcon) menuIcon.textContent = 'menu'; // Возвращаем бургер
+            }
+        });
+
+        // Функция принудительного закрытия (чтобы не дублировать код)
+        const closeMenuForce = () => {
+            mobileMenu.classList.add('hidden');
+            if (menuIcon) menuIcon.textContent = 'menu'; // Всегда возвращаем бургер
+        };
+
+        // Закрытие при клике на ссылки внутри меню
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (!link.classList.contains('js-open-modal')) {
+                    closeMenuForce();
+                }
+            });
+        });
+
+        // Закрытие при клике ВНЕ меню
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.classList.contains('hidden')) {
+                if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                    closeMenuForce();
+                }
+            }
+        });
+    }
+
+    // --- ЛОГИКА МОДАЛЬНОГО ОКНА (POP-UP) ---
+    const modal = document.getElementById('contact-modal');
+    const overlay = document.getElementById('modal-overlay');
+    const closeBtn = document.getElementById('close-modal-btn');
+    // Находим ВСЕ кнопки с классом js-open-modal
+    const openModalBtns = document.querySelectorAll('.js-open-modal');
+
+    // Функция открытия
+    function openModal(e) {
+        e.preventDefault(); // Запрещаем переход по ссылке
+
+        if (modal) {
+            modal.classList.remove('hidden'); // Показываем окно
+
+            // ФИКС БАГА: Если меню было открыто — закрываем его и меняем иконку
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden'); // Прячем меню
+
+                // 👇 Вот эта магия, которая вернет полоски вместо крестика
+                const icon = document.getElementById('mobile-menu-btn').querySelector('span');
+                if (icon) icon.textContent = 'menu';
+            }
+        }
+    }
+
+    // Функция закрытия
+    function closeModal() {
+        modal.classList.add('hidden');
+    }
+
+    // Вешаем слушатели на все кнопки "Записаться"
+    openModalBtns.forEach(btn => {
+        btn.addEventListener('click', openModal);
+    });
+
+    // Закрытие по крестику и фону
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (overlay) overlay.addEventListener('click', closeModal);
+
+    // Закрытие по клавише Esc
+    document.addEventListener('keydown', function(e) {
+        if(e.key === "Escape" && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+
+    // Настройки: анимация сработает, когда 15% блока покажется на экране
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+    };
+
+    // Создаем наблюдателя (Observer)
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            // Если блок появился во viewport (на экране)
+            if (entry.isIntersecting) {
+                // Добавляем класс, запускающий анимацию
+                entry.target.classList.add('is-visible');
+            } else {
+                // Если блок ушел с экрана — УБИРАЕМ класс
+                // Это сбрасывает анимацию, чтобы она могла начаться заново
+                entry.target.classList.remove('is-visible');
+            }
+        });
+    }, observerOptions);
+
+    // Находим все элементы с классом 'animate-block' и начинаем следить за ними
+    setTimeout(() => {
+        document.querySelectorAll('.animate-block').forEach(el => {
+            observer.observe(el);
+        });
+    }, 100);
+</script>
+</html>

@@ -3,7 +3,9 @@
 > A high-performance landing page for a fencing school in Brovary, Ukraine.
 > **Developed from scratch in just 48 hours.**
 
-![Project Preview](<img width="1906" height="1035" alt="image" src="https://github.com/user-attachments/assets/bccca9a7-b300-497a-9dc1-9508093ed37f" />)
+Project Preview
+<img width="1906" height="1035" alt="Снимок экрана 2026-02-07 210229" src="https://github.com/user-attachments/assets/a34bb3bb-914f-4dc8-b50d-883c2ccfa64f" />
+
 
 ## 🔗 Live Demo
 * 🚀 **Deployment:** [View Website on Vercel](https://engarde-jet.vercel.app/)
